@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Educativo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.category-container {
+    margin-bottom: 20px;
+}
+
+.category-container button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.category-container button:hover {
+    background-color: #0056b3;
+}
+
+.question-container {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.result {
+    font-size: 1.2em;
+    margin: 20px 0;
+}
+
+.next-button {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Juego Educativo</h1>
+        <div id="category-container" class="category-container">
+            <button onclick="selectCategory('math')">Matemáticas</button>
+            <button onclick="selectCategory('communication')">Comunicación</button>
+            <button onclick="selectCategory('animals')">Animales</button>
+        </div>
+        <div id="question-container" class="question-container" style="display: none;">
+            <div id="question">Pregunta aquí</div>
+            <input type="text" id="answer" placeholder="Escribe tu respuesta aquí">
+            <button onclick="checkAnswer()">Enviar Respuesta</button>
+        </div>
+        <div id="result" class="result"></div>
+        <button onclick="nextQuestion()" class="next-button" id="next-button" style="display: none;">Siguiente Pregunta</button>
+    </div>
+    <script>
+    let currentCategory = '';
+let currentQuestionIndex = 0;
+
+const questions = {
+    math: [
+        { question: "¿Cuánto es 2 + 2?", answer: "4" },
+        { question: "¿Cuánto es 5 - 3?", answer: "2" },
+        { question: "¿Cuánto es 7 + 1?", answer: "8" },
+        { question: "¿Cuánto es 6 - 4?", answer: "2" },
+        { question: "¿Cuánto es 3 + 3?", answer: "6" }
+    ],
+    communication: [
+        { question: "¿Cuál es el plural de 'niño'?", answer: "niños" },
+        { question: "Completa la oración: 'El gato ___ en el tejado.'", answer: "está" },
+        { question: "¿Cuál es el antónimo de 'grande'?", answer: "pequeño" },
+        { question: "¿Cuál es el sinónimo de 'feliz'?", answer: "contento" },
+        { question: "¿Cómo se dice 'casa' en inglés?", answer: "house" }
+    ],
+    animals: [
+        { question: "¿Qué animal dice 'miau'?", answer: "gato" },
+        { question: "¿Qué animal es conocido como el rey de la selva?", answer: "león" },
+        { question: "¿Qué animal tiene una trompa?", answer: "elefante" },
+        { question: "¿Qué animal pone huevos y puede volar?", answer: "pájaro" },
+        { question: "¿Qué animal vive en el agua y tiene aletas?", answer: "pez" }
+    ]
+};
+
+function selectCategory(category) {
+    currentCategory = category;
+    currentQuestionIndex = 0;
+    document.getElementById('category-container').style.display = 'none';
+    document.getElementById('question-container').style.display = 'block';
+    loadQuestion();
+}
+
+function loadQuestion() {
+    if (currentQuestionIndex < questions[currentCategory].length) {
+        const currentQuestion = questions[currentCategory][currentQuestionIndex];
+        document.getElementById('question').textContent = currentQuestion.question;
+        document.getElementById('answer').value = '';
+        document.getElementById('result').textContent = '';
+        document.getElementById('next-button').style.display = 'none';
+    } else {
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('result').textContent = "¡Has completado todas las preguntas!";
+    }
+}
+
+function checkAnswer() {
+    const answer = document.getElementById('answer').value.trim().toLowerCase();
+    const currentQuestion = questions[currentCategory][currentQuestionIndex];
+    if (answer === currentQuestion.answer.toLowerCase()) {
+        document.getElementById('result').textContent = "¡Correcto!";
+        document.getElementById('next-button').style.display = 'block';
+    } else {
+        document.getElementById('result').textContent = "Incorrecto. Inténtalo de nuevo.";
+    }
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    loadQuestion();
+}
+
+document.addEventListener('DOMContentLoaded', loadQuestion);
+    </script>
+</body>
+</html>
